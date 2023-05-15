@@ -2,20 +2,20 @@ module.exports = {
   transparent: "transparent",
 
   primary: {
-    DEFAULT: "#f28c18",
-    focus: "#c9710d",
-    faded: "#f28c182a",
+    DEFAULT: "#44917b",
+    focus: "#377664",
+    faded: "#44917b2a",
   },
 
   secondary: {
-    DEFAULT: "#187ef2",
-    focus: "#0d65c9",
-    faded: "#187ef22a",
+    DEFAULT: "#018cb4",
+    focus: "#016e8d",
+    faded: "#018cb42a",
   },
 
   accent: {
-    DEFAULT: "#4fa300",
-    focus: "#367000",
+    DEFAULT: "#ac516b",
+    focus: "#91445a",
   },
 
   danger: {
