@@ -24,3 +24,6 @@ web-build/
 #firebase service
 GoogleService-Info.plist
 google-services.json
+
+#Dummydata
+dummy*.json
