@@ -29,6 +29,8 @@ module.exports = {
   },
 
   content: {
+    income: "#87cf3a",
+    expense: "#ff6b6b",
     100: "#ffffff",
     150: "#F0F0F0",
     200: "#cbd5e1",
@@ -42,7 +44,7 @@ module.exports = {
     150: "#e7e9eb",
     200: "#e2e8f0",
     300: "#cbd5e1",
-    350: "#64748b",
+    350: "#3c3c3c",
     400: "#2f2f2f",
     450: "#2b2b2b",
     500: "#212121",
