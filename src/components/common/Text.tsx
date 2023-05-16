@@ -33,7 +33,7 @@ const Text = ({ size, children, ...props }: Props) => {
       : "";
 
   return (
-    <TextRN className={`${textSize} text-content-400 dark:text-content-150`} {...props}>
+    <TextRN className={`${textSize} text-content-400 dark:text-content-100`} {...props}>
       {children}
     </TextRN>
   );
