@@ -12,19 +12,19 @@ const TransactionCard = (props: Transaction) => {
   const amountColor = props.type === "income" ? "text-content-income" : "text-content-expense";
 
   return (
-    <View className="bg-content-100 dark:bg-base-400 w-full p-3 flex-row items-center rounded-lg mb-2">
-      <View className="bg-primary-faded dark:bg-primary-focus/50 p-3 rounded-full">
+    <View className="flex-row items-center w-full p-3 mb-2 rounded-lg bg-content-100 dark:bg-base-400">
+      <View className="w-12 h-12 p-3 rounded-full bg-primary-faded dark:bg-primary-focus/50">
         <Icon
           name={props.category.icon as ComponentProps<typeof Icon>["name"]}
           color={colorScheme === "dark" ? colors.content[150] : colors.content[400]}
           size={24}
         />
       </View>
-      <View className="pl-3 pr-6 flex-1">
+      <View className="flex-1 pl-3 pr-6">
         <Text size="base" numberOfLines={1}>
           {props.description}
         </Text>
-        <Text size="sm" className="text-content-300 dark:text-content-200 italic">
+        <Text size="sm" className="italic text-content-300 dark:text-content-200">
           {props.category.name}
         </Text>
       </View>
