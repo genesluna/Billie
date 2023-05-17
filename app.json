@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#212121"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "googleServicesFile": "./src/config/google-services.json",
       "supportsTablet": true
@@ -21,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.codercat.billie"
     },
     "web": {
       "favicon": "./assets/favicon.png"
