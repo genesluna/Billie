@@ -10,7 +10,7 @@ import React from "react";
  */
 const Container = ({ children, ...props }: ViewProps): JSX.Element => {
   return (
-    <View className="items-center justify-start flex-1 px-4 bg-base-150 dark:bg-base-600" {...props}>
+    <View className="items-center justify-center flex-1 px-4 bg-base-150 dark:bg-base-600" {...props}>
       {children}
     </View>
   );
