@@ -1,102 +1,109 @@
-import { ScrollView, View, StatusBar, FlatList } from "react-native";
-import { Feather as Icon } from "@expo/vector-icons";
+import { View, FlatList, ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
 
-import Container from "../../components/common/Container";
-import Text from "../../components/common/Text";
-import colors from "../../../colors";
+import TransactionsListHeader from "../../components/TransactionsListHeader";
 import TransactionCard from "../../components/TransactionCard";
+import HighlightCards from "../../components/HighlightCards";
+import Container from "../../components/common/Container";
+import { Transaction } from "../../models/Transaction";
+import HomeHeader from "../../components/HomeHeader";
+import { useAuth } from "../../context/AuthContext";
 import {
-  filterTransactionsByCurrentMonthYear,
-  months,
-  sortTransactionsByDate,
-  sumAmountByTransactionType,
-} from "../../utils/utils";
-import transactionsJson from "../../data/dummyTransactions.json";
+  getCurrentMonthUserTransactions,
+  getOldestUserTransactionDate,
+  getUserTransactionsByMonthAndYear,
+} from "../../services/firestore/transactionsService";
+import colors from "../../../colors";
+import TransactionsListEmpty from "../../components/TransactionsListEmpty";
 
-let transactions = filterTransactionsByCurrentMonthYear(transactionsJson["transactions"]);
-transactions = sortTransactionsByDate(transactions);
+const Home = () => {
+  const [isLoading, setIsloading] = useState<boolean>(true);
+  const [transactions, setTransactions] = useState<Transaction[]>([] as Transaction[]);
+  const [oldestTransactionDate, setOldestTransactionDate] = useState<Date | undefined>(undefined);
+  const { authUser } = useAuth();
 
-type Props = {};
+  useEffect(() => {
+    const getTrasactions = async () => {
+      try {
+        const transactionsResult = await getCurrentMonthUserTransactions(authUser?.uid!);
+        const oldestTransactionDateResult = await getOldestUserTransactionDate(authUser?.uid!);
+        setOldestTransactionDate(oldestTransactionDateResult);
+        setTransactions(transactionsResult);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsloading(false);
+      }
+    };
 
-const statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight + 22 : 64;
+    getTrasactions();
+  }, []);
 
-const Home = (props: Props) => {
-  const income = sumAmountByTransactionType(transactions, "income");
-  const expenses = sumAmountByTransactionType(transactions, "expense");
-  const total = income - expenses;
+  async function onPreviousMonth(): Promise<void> {
+    const currentMonth = transactions[0]?.date?.getMonth() ?? new Date().getMonth();
+    const currentYear = transactions[0]?.date?.getFullYear() ?? new Date().getFullYear();
+    const month = currentMonth > 0 ? currentMonth - 1 : 11;
+    const year = currentMonth !== 0 ? currentYear : currentYear - 1;
+    return await handlePreviousAndNextMonthTransactions(month, year);
+  }
+
+  async function onNextMonth(): Promise<void> {
+    const currentMonth = transactions[0]?.date?.getMonth() ?? new Date().getMonth();
+    const currentYear = transactions[0]?.date?.getFullYear() ?? new Date().getFullYear();
+    const month = currentMonth < 11 ? currentMonth + 1 : 0;
+    const year = currentMonth !== 11 ? currentYear : currentYear + 1;
+    return await handlePreviousAndNextMonthTransactions(month, year);
+  }
+
+  async function handlePreviousAndNextMonthTransactions(month: number, year: number): Promise<void> {
+    try {
+      setIsloading(true);
+      const result = await getUserTransactionsByMonthAndYear(authUser?.uid!, month, year);
+      setTransactions(result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsloading(false);
+    }
+  }
 
   return (
     <View className="flex-1">
-      <View className="h-40 p-4 bg-primary" style={{ paddingTop: statusBarHeight }}>
-        <Text size="base" className="font-medium text-content-100">
-          Genes Luna
-        </Text>
-      </View>
-      <ScrollView
-        className="mt-[-60] flex-none z-50"
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, gap: 12 }}
-      >
-        <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-base-500 dark:shadow-base-350 h-24 p-4 min-w-[144]">
-          <View className="flex-row justify-between items-center">
-            <Text size="base">Despesas</Text>
-            <Icon name="arrow-down-circle" size={20} color={colors.content.expense} />
-          </View>
-          <Text size="xl" className="font-medium mt-3">
-            {expenses.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          </Text>
-        </View>
+      <HomeHeader />
 
-        <View className=" bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-base-500 dark:shadow-base-350 h-24 p-4 min-w-[144]">
-          <View className="flex-row justify-between items-center">
-            <Text size="base">Receitas</Text>
-            <Icon name="arrow-up-circle" size={20} color={colors.content.income} />
-          </View>
-          <Text size="xl" className="font-medium mt-3">
-            {income.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          </Text>
-        </View>
+      <HighlightCards transactions={transactions} isLoading={isLoading} />
 
-        <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-base-500 dark:shadow-base-400 h-24 p-4 min-w-[144]">
-          <View className="flex-row justify-between items-center">
-            <Text size="base">Total</Text>
-            <Icon name="dollar-sign" size={20} color={colors.content.income} />
-          </View>
-          <Text size="xl" className="font-medium mt-3">
-            {total.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          </Text>
-        </View>
-      </ScrollView>
       <Container>
-        <Text size="lg" className="font-medium w-full text-start pb-4 pt-1">
-          Movimentações de {months[new Date().getMonth()]}
-        </Text>
-        <FlatList
-          className="w-full"
-          data={transactions}
-          keyExtractor={(item) => item.Id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TransactionCard
-              userId={item.userId}
-              type={item.type}
-              amount={item.amount}
-              date={new Date(item.date)}
-              description={item.description}
-              category={{ name: item.category.name, icon: item.category.icon }}
-            />
-          )}
-        />
+        {!isLoading ? (
+          <FlatList
+            className="w-full"
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+            data={transactions}
+            keyExtractor={(item) => item?.Id!}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={() => <TransactionsListEmpty initialDate={oldestTransactionDate} />}
+            ListHeaderComponent={() => (
+              <TransactionsListHeader
+                currentDate={transactions[0]?.date ?? new Date()}
+                initialDate={oldestTransactionDate}
+                onPreviousMonth={onPreviousMonth}
+                onNextMonth={onNextMonth}
+              />
+            )}
+            renderItem={({ item }) => (
+              <TransactionCard
+                userId={item?.userId}
+                type={item?.type}
+                amount={item?.amount}
+                date={new Date(item?.date)}
+                description={item?.description}
+                category={{ name: item?.category.name, icon: item?.category.icon }}
+              />
+            )}
+          />
+        ) : (
+          <ActivityIndicator size={60} color={colors.primary.DEFAULT} />
+        )}
       </Container>
     </View>
   );
