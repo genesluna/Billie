@@ -2,18 +2,18 @@
  * Array of month names in Portuguese.
  */
 export const months: string[] = [
-  "janeiro",
-  "fevereiro",
-  "março",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro",
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ];
 
 /**
@@ -34,7 +34,7 @@ export function formatDate(data: Date): string {
  * @param transactions The array of transactions to be sorted.
  * @returns The sorted array of transactions.
  */
-export function sortTransactionsByDate(transactions: any[]): any[] {
+export function sortTransactionsByDate<T>(transactions: any[]): T[] {
   const sortedTransactions = transactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return sortedTransactions;
@@ -45,7 +45,7 @@ export function sortTransactionsByDate(transactions: any[]): any[] {
  * @param transactions The array of transactions to be filtered.
  * @returns The filtered array of transactions.
  */
-export function filterTransactionsByCurrentMonthYear(transactions: any[]): any[] {
+export function filterTransactionsByCurrentMonthYear<T>(transactions: any[]): T[] {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
