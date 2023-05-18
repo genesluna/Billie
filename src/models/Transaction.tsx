@@ -1,4 +1,5 @@
 export interface Transaction {
+  Id?: string;
   description: string;
   type: "income" | "expense" | string;
   amount: number;
