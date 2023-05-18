@@ -46,7 +46,7 @@ export function UserRoutes() {
         name="addTransaction"
         component={AddTransaction}
         options={{
-          title: "Nova",
+          title: "Adicionar",
           headerTitle: "Adicionar transação",
           tabBarIcon: ({ color, size }) => <Icon name="plus" color={color} size={size} />,
         }}
