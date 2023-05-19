@@ -1,13 +1,33 @@
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import Container from "../../components/common/Container";
-import Text from "../../components/common/Text";
+import { Transaction } from "../../models/Transaction";
+import { useTransactions } from "../../context/TransactionsContext";
+import AddTransactionForm from "../../components/forms/User/AddTransactionForm";
 
-type Props = {};
+const AddTransaction = () => {
+  const navigation = useNavigation();
+  const { addTransaction } = useTransactions();
 
-const AddTransaction = (props: Props) => {
+  async function handleAddTransaction(trasaction: Transaction): Promise<void> {
+    try {
+      const result = await addTransaction(trasaction);
+      trasaction.Id = result.id;
+      navigation.navigate("home");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <Container>
-      <Text size="h2">Adicionar transação</Text>
-    </Container>
+    <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <Container>
+          <AddTransactionForm onSubmit={handleAddTransaction} />
+        </Container>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
