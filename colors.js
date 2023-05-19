@@ -4,6 +4,7 @@ module.exports = {
   primary: {
     DEFAULT: "#44917b",
     focus: "#377664",
+    border: "#2b5b4d",
     faded: "#44917b2a",
   },
 
