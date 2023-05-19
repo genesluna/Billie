@@ -128,9 +128,6 @@ export function AuthProvider({ children }: AuthContextProps) {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged((user) => {
       setAuthUser(user);
-      //console.log(auth().tenantId);
-      //GoogleSignin.signOut();
-      //logout();
       if (initializingAuthUser) setInitializingAuthUser(false);
     });
 
