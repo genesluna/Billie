@@ -6,6 +6,8 @@ export declare global {
       emailValidation: undefined;
       forgotPassword: undefined;
       home: undefined;
+      addTransction: undefined;
+      reports: undefined;
     }
   }
 }
