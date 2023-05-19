@@ -49,6 +49,7 @@ export function UserRoutes() {
           title: "Adicionar",
           headerTitle: "Adicionar transação",
           tabBarIcon: ({ color, size }) => <Icon name="plus" color={color} size={size} />,
+          unmountOnBlur: true,
         }}
       />
       <Screen
