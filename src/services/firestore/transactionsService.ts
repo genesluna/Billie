@@ -5,13 +5,13 @@ export const trasactionsCollection = firestore().collection(
   "transactions"
 ) as FirebaseFirestoreTypes.CollectionReference<Transaction>;
 
-export function createtransaction(transaction: Transaction) {
+export function addTransaction(transaction: Transaction) {
   return trasactionsCollection.add({
     ...transaction,
   });
 }
 
-export function updatetransaction(transaction: Transaction) {
+export function updateTransaction(transaction: Transaction) {
   return trasactionsCollection.add({
     ...transaction,
   });
