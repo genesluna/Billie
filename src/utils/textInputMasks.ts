@@ -82,7 +82,7 @@ export function maskCurrency(value: string) {
  *
  * @returns A string with the currency value formatted in US format.
  */
-export function maskCurrencyUS(value: string): string {
+export function maskCurrencyUS(value: string) {
   // Remove any non-numeric characters from the string.
   value = value.replace(/\D/g, "");
   // Add a period between the second to last and last digits.
@@ -112,12 +112,21 @@ export function onlyNumbers(value: string) {
  *
  * @param value - The string value to be formatted
  *
- * @returns A string containing only the numeric characters with a period added between the second to last and last digits.
+ * @returns A number with two decimal places.
  */
 export function onlyNumbersWithDecimal(value: string) {
   // Remove any non-numeric characters from the string.
   value = value.replace(/[^\d]*/g, "");
   // Add a period between the second to last and last digits.
   value = value.replace(/(\d)(\d{2})$/, "$1.$2");
-  return value;
+
+  let result: number;
+
+  try {
+    result = parseFloat(value);
+  } catch (e) {
+    result = NaN;
+  }
+
+  return result;
 }
