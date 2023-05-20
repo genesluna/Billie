@@ -1,10 +1,10 @@
 import { View, ScrollView, ScrollViewProps, ActivityIndicator } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
 
+import { sumAmountByTransactionType } from "../utils/transactionsUtils";
+import { Transaction } from "../models/Transaction";
 import colors from "../../colors";
 import Text from "./common/Text";
-import { sumAmountByTransactionType } from "../utils/utils";
-import { Transaction } from "../models/Transaction";
 
 type HighlightCardsProps = ScrollViewProps & {
   transactions: Transaction[];
@@ -61,7 +61,7 @@ const HighlightCards = ({ transactions, isLoading, ...props }: HighlightCardsPro
       <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-base-500 dark:shadow-base-400 h-24 p-4 min-w-[144]">
         <View className="flex-row items-center justify-between">
           <Text size="base">Total</Text>
-          <Icon name="dollar-sign" size={20} color={colors.content.income} />
+          <Icon name="dollar-sign" size={20} color={total >= 0 ? colors.content.income : colors.content.expense} />
         </View>
         {!isLoading ? (
           <Text size="xl" className="mt-3 font-medium">
