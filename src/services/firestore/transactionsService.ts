@@ -1,25 +1,30 @@
 import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+
 import { Transaction } from "../../models/Transaction";
 
-export const trasactionsCollection = firestore().collection(
-  "transactions"
-) as FirebaseFirestoreTypes.CollectionReference<Transaction>;
+function transactionsCollection(userId: string): FirebaseFirestoreTypes.CollectionReference<Transaction> {
+  return firestore().collection(
+    `users/${userId}/transactions`
+  ) as FirebaseFirestoreTypes.CollectionReference<Transaction>;
+}
 
-export function addTransaction(transaction: Transaction) {
-  return trasactionsCollection.add({
+export function addTransaction(transaction: Transaction, userId: string) {
+  return transactionsCollection(userId).add({
     ...transaction,
   });
 }
 
-export function updateTransaction(transaction: Transaction) {
-  return trasactionsCollection.add({
-    ...transaction,
-  });
+export function updateTransaction(transaction: Transaction, userId: string) {
+  return transactionsCollection(userId)
+    .doc(transaction.Id)
+    .update({
+      ...transaction,
+    });
 }
 
 export async function getUserTransactions(userId: string) {
-  return await trasactionsCollection
-    .where("userId", "==", userId)
+  return await transactionsCollection(userId)
+    .orderBy("date", "asc")
     .get()
     .then((snapshot) => {
       if (snapshot.empty) return [] as Transaction[];
@@ -32,8 +37,7 @@ export async function getUserTransactions(userId: string) {
 }
 
 export async function getOldestUserTransactionDate(userId: string) {
-  return await trasactionsCollection
-    .where("userId", "==", userId)
+  return await transactionsCollection(userId)
     .orderBy("date", "asc")
     .limit(1)
     .get()
@@ -45,10 +49,9 @@ export async function getCurrentMonthUserTransactions(userId: string) {
 
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
-  return await trasactionsCollection
-    .where("userId", "==", userId)
+  return await transactionsCollection(userId)
     .where("date", ">=", firstDay)
     .where("date", "<=", lastDay)
     .orderBy("date", "desc")
@@ -68,10 +71,9 @@ export async function getUserTransactionsByMonthAndYear(userId: string, month: n
 
   const firstDay = new Date(year, month, 1);
 
-  const lastDay = new Date(year, month + 1, 0);
+  const lastDay = new Date(year, month + 1, 0, 23, 59, 59, 999);
 
-  return await trasactionsCollection
-    .where("userId", "==", userId)
+  return await transactionsCollection(userId)
     .where("date", ">=", firstDay)
     .where("date", "<=", lastDay)
     .orderBy("date", "desc")
