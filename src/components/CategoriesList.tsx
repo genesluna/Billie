@@ -1,4 +1,4 @@
-import { View, FlatList, TouchableOpacity, ViewProps, useColorScheme } from "react-native";
+import { View, FlatList, Pressable, ViewProps, useColorScheme } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
 import { categories } from "../data/categories";
@@ -33,12 +33,11 @@ const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: Cat
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
           <View>
-            <TouchableOpacity
+            <Pressable
               className={`flex-row items-center px-3 py-4 ${
                 category?.name === item.name ? "bg-primary-faded dark:bg-primary-faded" : ""
               }`}
               onPress={() => handleCategorySelection(item)}
-              activeOpacity={0.7}
             >
               <Icon
                 name={item.icon as ComponentProps<typeof Icon>["name"]}
@@ -48,7 +47,7 @@ const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: Cat
               <Text className="ml-3 font-medium" size="base">
                 {item.name}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         )}
         ItemSeparatorComponent={() => <View className="w-full h-[1] bg-content-300 dark:bg-content-200" />}
