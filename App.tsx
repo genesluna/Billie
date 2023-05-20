@@ -1,7 +1,8 @@
 import { SafeAreaView, useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Routes } from "./src/routes";
+
 import { AuthProvider } from "./src/context/AuthContext";
+import { Routes } from "./src/routes";
 
 export default function App() {
   let colorScheme = useColorScheme();
