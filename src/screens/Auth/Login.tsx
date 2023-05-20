@@ -1,16 +1,17 @@
-import { Keyboard, KeyboardAvoidingView, Platform, ToastAndroid, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, Platform, ToastAndroid, TouchableWithoutFeedback } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 
-import { useAuth } from "../../context/AuthContext";
 import LoginForm, { LoginFormValues } from "../../components/forms/Auth/LoginForm";
-import Header from "../../components/forms/Auth/Header";
+import { createUser } from "../../services/firestore/userService";
 import Container from "../../components/common/Container";
+import Header from "../../components/forms/Auth/Header";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const [isGoogleSinginLoading, setIsGoolgeSigninLoaging] = useState<boolean>(false);
   const navigation = useNavigation();
-  const { login, loginWithGoogle, authUser } = useAuth();
+  const { login, logout, deleteCurrentUser, loginWithGoogle, authUser } = useAuth();
 
   useEffect(() => {
     // Handles unfinished registration when the user is still logged in and restarts the app
@@ -43,8 +44,22 @@ const Login = () => {
     try {
       setIsGoolgeSigninLoaging(true);
       const result = await loginWithGoogle();
-      if (result.additionalUserInfo?.isNewUser) {
-        ToastAndroid.show("Usuário cadastrado com sucesso.", ToastAndroid.LONG);
+      try {
+        if (result.additionalUserInfo?.isNewUser) {
+          await createUser(
+            {
+              name: result.user.displayName,
+              email: result.user.email,
+              photoURL: result.user.photoURL ?? "",
+            },
+            result.user.uid
+          );
+          ToastAndroid.show("Usuário cadastrado com sucesso.", ToastAndroid.LONG);
+        }
+      } catch (error) {
+        await deleteCurrentUser();
+        await logout();
+        console.log(error);
       }
     } catch (error) {
       console.log(error);
