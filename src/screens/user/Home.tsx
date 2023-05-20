@@ -1,4 +1,5 @@
 import { View, FlatList, ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import TransactionsListHeader from "../../components/TransactionsListHeader";
 import TransactionsListEmpty from "../../components/TransactionsListEmpty";
@@ -6,11 +7,13 @@ import { useTransactions } from "../../context/TransactionsContext";
 import TransactionCard from "../../components/TransactionCard";
 import HighlightCards from "../../components/HighlightCards";
 import Container from "../../components/common/Container";
+import { Transaction } from "../../models/Transaction";
 import HomeHeader from "../../components/HomeHeader";
 import colors from "../../../colors";
 
 const Home = () => {
   const { isLoading, transactions, oldestTransactionDate, handlePreviousAndNextMonthTransactions } = useTransactions();
+  const navigation = useNavigation();
 
   async function onPreviousMonth(): Promise<void> {
     const currentMonth = transactions[0]?.date?.getMonth() ?? new Date().getMonth();
@@ -26,6 +29,10 @@ const Home = () => {
     const month = currentMonth < 11 ? currentMonth + 1 : 0;
     const year = currentMonth !== 11 ? currentYear : currentYear + 1;
     return await handlePreviousAndNextMonthTransactions(month, year);
+  }
+
+  function onItemPress(item: Transaction) {
+    navigation.navigate("addTransaction", { transactionId: item.Id! });
   }
 
   return (
@@ -51,16 +58,7 @@ const Home = () => {
                 onNextMonth={onNextMonth}
               />
             )}
-            renderItem={({ item }) => (
-              <TransactionCard
-                userId={item?.userId}
-                type={item?.type}
-                amount={item?.amount}
-                date={new Date(item?.date)}
-                description={item?.description}
-                category={{ name: item?.category.name, icon: item?.category.icon }}
-              />
-            )}
+            renderItem={({ item }) => <TransactionCard transaction={item} onPress={() => onItemPress(item)} />}
           />
         ) : (
           <ActivityIndicator size={60} color={colors.primary.DEFAULT} />
