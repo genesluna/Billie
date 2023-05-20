@@ -3,14 +3,7 @@ import React, { forwardRef, useState } from "react";
 import Input, { InputProps } from "./Input";
 import { styled } from "nativewind";
 
-import {
-  maskPhone,
-  maskCurrency,
-  maskCPF,
-  maskCNPJ,
-  onlyNumbers,
-  onlyNumbersWithDecimal,
-} from "../../utils/textInputMasks";
+import { maskPhone, maskCurrency, maskCPF, maskCNPJ, onlyNumbers } from "../../utils/textInputMasks";
 
 type MaskedInputProps = InputProps & {
   mask: "PHONE" | "CURRENCY" | "CPF" | "CNPJ";
@@ -50,7 +43,7 @@ const MaskedInput = forwardRef<TextInput, MaskedInputProps>(
       }
 
       function setMask(maskedValue: string) {
-        onChangeUnmasked?.(mask !== "CURRENCY" ? onlyNumbers(maskedValue) : onlyNumbersWithDecimal(maskedValue));
+        onChangeUnmasked?.(onlyNumbers(maskedValue));
         onChangeMask?.(maskedValue);
         setText(maskedValue);
       }
