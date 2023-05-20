@@ -1,5 +1,7 @@
 import { useContext, useState, useEffect, ReactNode, createContext } from "react";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+
+import { sortTransactionsByDate } from "../utils/transactionsUtils";
 import { Transaction } from "../models/Transaction";
 import { useAuth } from "./AuthContext";
 import {
@@ -15,12 +17,17 @@ type AuthContextProps = {
 };
 
 type TransactionsContextType = {
-  isLoading: boolean;
-  transactions: Transaction[];
   oldestTransactionDate: Date | undefined;
-  addTransaction: (transaction: Transaction) => Promise<FirebaseFirestoreTypes.DocumentReference<Transaction>>;
-  updateTransaction: (transaction: Transaction) => Promise<FirebaseFirestoreTypes.DocumentReference<Transaction>>;
+  transactions: Transaction[];
+  isLoading: boolean;
   handlePreviousAndNextMonthTransactions(month: number, year: number): Promise<void>;
+  updateTransaction: (transaction: Transaction, userId: string) => Promise<void>;
+  updateItemInCurrentMonthTransactions(transaction: Transaction): void;
+  addItemToCurrentMonthTransactions(transaction: Transaction): void;
+  addTransaction: (
+    transaction: Transaction,
+    userId: string
+  ) => Promise<FirebaseFirestoreTypes.DocumentReference<Transaction>>;
 };
 
 /**
@@ -87,13 +94,66 @@ export function TransactionsProvider({ children }: AuthContextProps) {
     }
   }
 
+  /**
+   * Adds a transaction to the current month's transactions.
+   * If the user is in the current month screen, the transaction is added directly and the transactions are sorted by date in descending order.
+   * If the user is not in the current month screen, the transaction is added to the current month's transactions and sorted by date in descending order.
+   *
+   * @param transaction - The transaction to be added.
+   */
+  function addItemToCurrentMonthTransactions(transaction: Transaction) {
+    setIsloading(true);
+
+    /**
+     * Processes the transaction by adding it to the transactions array and sorting the transactions by date in descending order.
+     *
+     * @param transaction - The transaction to be processed.
+     */
+    const processTransaction = (transaction: Transaction) => {
+      transactions.push(transaction);
+      const sorted = sortTransactionsByDate<Transaction>(transactions, "desc");
+      setTransactions(sorted);
+    };
+
+    // Handle the scenario where the user is in the current month screen and adds a new transaction
+    if (
+      transaction.date.getFullYear() === new Date().getFullYear() &&
+      transaction.date.getMonth() === new Date().getMonth()
+    ) {
+      processTransaction(transaction);
+    }
+    // Handle the scenario where the user is not in the current month screen and adds a new transaction
+    else if (
+      transaction.date.getFullYear() === transactions[0].date.getFullYear() &&
+      transaction.date.getMonth() === transactions[0].date.getMonth()
+    ) {
+      processTransaction(transaction);
+    }
+
+    setIsloading(false);
+  }
+
+  /**
+   * Updates a transaction in the current month's transactions.
+   *
+   * @param transaction - The updated transaction to replace the existing one.
+   */
+  function updateItemInCurrentMonthTransactions(transaction: Transaction) {
+    setIsloading(true);
+    const oldTransIndex = transactions.findIndex((obj) => obj.Id === transaction.Id);
+    transactions[oldTransIndex] = transaction;
+    setIsloading(false);
+  }
+
   const values: TransactionsContextType = {
-    isLoading,
-    transactions,
     oldestTransactionDate,
-    addTransaction,
-    updateTransaction,
+    transactions,
+    isLoading,
     handlePreviousAndNextMonthTransactions,
+    updateItemInCurrentMonthTransactions,
+    addItemToCurrentMonthTransactions,
+    updateTransaction,
+    addTransaction,
   };
 
   return <TransactionsContext.Provider value={values}>{children}</TransactionsContext.Provider>;
