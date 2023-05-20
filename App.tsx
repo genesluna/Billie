@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { SafeAreaView, useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
