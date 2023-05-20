@@ -1,13 +1,13 @@
-import { View, ToastAndroid } from "react-native";
-import { useEffect, useRef, useState } from "react";
 import { Feather as Icon } from "@expo/vector-icons";
+import { useEffect, useRef, useState } from "react";
+import { View, ToastAndroid } from "react-native";
 
-import colors from "../../../colors";
 import Container from "../../components/common/Container";
+import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/common/Button";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
 import Text from "../../components/common/Text";
+import colors from "../../../colors";
 
 const EmailValidation = () => {
   const [isLoadingResend, setIsLoadingResend] = useState<boolean>(false);

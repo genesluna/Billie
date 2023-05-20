@@ -1,5 +1,5 @@
-import { Feather as Icon } from "@expo/vector-icons";
 import { View, ViewProps, useColorScheme } from "react-native";
+import { Feather as Icon } from "@expo/vector-icons";
 
 import colors from "../../colors";
 import Text from "./common/Text";

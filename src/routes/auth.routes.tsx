@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useColorScheme } from "react-native";
 
-import colors from "../../colors";
-import Login from "../screens/Auth/Login";
-import Register from "../screens/Auth/Register";
-import ForgotPassword from "../screens/Auth/ForgotPassword";
 import EmailValidation from "../screens/Auth/EmailValidation";
+import ForgotPassword from "../screens/Auth/ForgotPassword";
+import Register from "../screens/Auth/Register";
+import Login from "../screens/Auth/Login";
+import colors from "../../colors";
 
 const { Screen, Navigator } = createNativeStackNavigator();
 

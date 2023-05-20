@@ -1,6 +1,7 @@
 import { View, ViewProps, GestureResponderEvent } from "react-native";
+
+import { months } from "../utils/transactionsUtils";
 import Button from "./common/Button";
-import { months } from "../utils/utils";
 import Text from "./common/Text";
 
 type TransactionsListHeaderProps = ViewProps & {

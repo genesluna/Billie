@@ -1,9 +1,9 @@
 import { Keyboard, KeyboardAvoidingView, Platform, ToastAndroid, TouchableWithoutFeedback } from "react-native";
 
-import { useAuth } from "../../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
-import Container from "../../components/common/Container";
 import ForgotPasswordForm, { ForgotPaswordFormValues } from "../../components/forms/Auth/ForgotPasswordForm";
+import Container from "../../components/common/Container";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../context/AuthContext";
 
 const ForgotPassword = () => {
   const navigation = useNavigation();
