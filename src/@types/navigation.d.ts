@@ -1,3 +1,5 @@
+import { Transaction } from "../models/Transaction";
+
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
@@ -6,7 +8,9 @@ export declare global {
       emailValidation: undefined;
       forgotPassword: undefined;
       home: undefined;
-      addTransction: undefined;
+      addTransaction: {
+        transactionId: string | undefined;
+      };
       reports: undefined;
     }
   }
