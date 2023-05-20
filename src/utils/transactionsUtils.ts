@@ -35,16 +35,16 @@ export function formatDate(data: Date): string {
 }
 
 /**
- * Sorts an array of transactions by date in ascending order.
+ * Sorts an array of transactions by date in either ascending or descending order.
  *
- * @param transactions The array of transactions to be sorted.
+ * @param transactions - The array of transactions to be sorted.
+ * @param order - The sorting order. Can be "asc" for ascending or "desc" for descending.
  *
- * @returns The sorted array of transactions.
+ * @returns A new array of transactions sorted by date.
  */
-export function sortTransactionsByDate<T>(transactions: any[]): T[] {
-  const sortedTransactions = transactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  return sortedTransactions;
+export function sortTransactionsByDate<T>(transactions: any[], order: "asc" | "desc"): T[] {
+  if (order === "asc") return transactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  else return transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 /**
@@ -55,19 +55,11 @@ export function sortTransactionsByDate<T>(transactions: any[]): T[] {
  * @returns The filtered array of transactions.
  */
 export function filterTransactionsByCurrentMonthYear<T>(transactions: any[]): T[] {
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-
-  const filteredTransactions = transactions.filter((transaction) => {
-    const transactionDate = new Date(transaction.date);
-    const transactionYear = transactionDate.getFullYear();
-    const transactionMonth = transactionDate.getMonth();
-
-    return transactionYear === currentYear && transactionMonth === currentMonth;
-  });
-
-  return filteredTransactions;
+  return transactions.filter(
+    (transaction) =>
+      transaction.date.getFullYear() === new Date().getFullYear() &&
+      transaction.date.getMonth() === new Date().getMonth()
+  );
 }
 
 /**
@@ -107,4 +99,16 @@ export function sumAmountsByCategory(transactions: Transaction[]): Category[] {
   });
 
   return Object.values(categories);
+}
+
+/**
+ * Retrieves a transaction from an array of transactions based on the transaction ID.
+ *
+ * @param transactions - The array of transactions to search.
+ * @param transactionId - The ID of the transaction to retrieve.
+ *
+ * @returns The transaction object with the matching ID, or `undefined` if not found.
+ */
+export function getTransactionById(transactions: Transaction[], transactionId: string): Transaction | undefined {
+  return transactions.find((transaction) => transaction.Id === transactionId);
 }
