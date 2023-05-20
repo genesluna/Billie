@@ -16,10 +16,11 @@ type AuthContextType = {
   register: (email: string, password: string) => Promise<FirebaseAuthTypes.UserCredential>;
   login: (email: string, password: string) => Promise<FirebaseAuthTypes.UserCredential>;
   loginWithGoogle: () => Promise<FirebaseAuthTypes.UserCredential>;
-  logout: () => Promise<void>;
-  reloadAuthUser: () => Promise<void>;
+  deleteCurrentUser: () => Promise<void> | undefined;
   resetPassword: (email: string) => Promise<void>;
   isEmailVerified(): boolean | undefined;
+  reloadAuthUser: () => Promise<void>;
+  logout: () => Promise<void>;
 };
 
 /**
@@ -106,7 +107,17 @@ export function AuthProvider({ children }: AuthContextProps) {
    * @returns A Promise that resolves after successful logout.
    */
   function logout(): Promise<void> {
+    //GoogleSignin.signOut();
     return auth().signOut();
+  }
+
+  /**
+   * Deletes the currently authenticated user.
+   *
+   * @returns A Promise that resolves after successful deletion or undefined.
+   */
+  function deleteCurrentUser(): Promise<void> | undefined {
+    return auth().currentUser?.delete();
   }
 
   /**
@@ -136,13 +147,14 @@ export function AuthProvider({ children }: AuthContextProps) {
 
   const values: AuthContextType = {
     authUser,
-    login,
+    deleteCurrentUser,
     loginWithGoogle,
-    register,
-    logout,
+    isEmailVerified,
     reloadAuthUser,
     resetPassword,
-    isEmailVerified,
+    register,
+    logout,
+    login,
   };
 
   return <AuthContext.Provider value={values}>{!initializingAuthUser && children}</AuthContext.Provider>;
