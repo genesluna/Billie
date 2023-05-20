@@ -2,9 +2,9 @@ import { StatusBar, View, Image } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
 
 import { useAuth } from "../context/AuthContext";
+import Button from "./common/Button";
 import colors from "../../colors";
 import Text from "./common/Text";
-import Button from "./common/Button";
 
 const statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight + 22 : 64;
 
