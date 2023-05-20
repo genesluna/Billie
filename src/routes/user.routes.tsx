@@ -1,15 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useColorScheme } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Feather as Icon } from "@expo/vector-icons";
+import { useColorScheme } from "react-native";
 
-import Home from "../screens/User/Home";
-import colors from "../../colors";
 import AddTransaction from "../screens/User/AddTransaction";
 import Reports from "../screens/User/Reports";
+import Home from "../screens/User/Home";
+import colors from "../../colors";
+
 const { Screen, Navigator } = createBottomTabNavigator();
 
 export function UserRoutes() {
   let colorScheme = useColorScheme();
+  const navigation = useNavigation();
 
   return (
     <Navigator
@@ -45,6 +48,12 @@ export function UserRoutes() {
       <Screen
         name="addTransaction"
         component={AddTransaction}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("addTransaction", { transactionId: undefined });
+          },
+        }}
         options={{
           title: "Adicionar",
           headerTitle: "Adicionar transação",
