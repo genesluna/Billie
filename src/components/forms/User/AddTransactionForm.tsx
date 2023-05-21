@@ -124,7 +124,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
 
       <View className="flex-row w-full mt-4 mb-3">
         <Button
-          icon="corner-left-up"
+          icon="arrow-down-circle"
           className={`w-1/2 border ${
             type === "expense"
               ? "bg-primary border-primary-border dark:bg-base-400 dark:border-primary-focus"
@@ -137,7 +137,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
           label="Despesa"
         />
         <Button
-          icon="corner-right-down"
+          icon="arrow-up-circle"
           className={`w-1/2 border ${
             type === "income"
               ? "bg-primary border-primary-border dark:bg-base-400 dark:border-primary-focus"
