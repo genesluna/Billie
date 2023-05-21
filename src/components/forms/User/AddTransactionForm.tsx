@@ -1,5 +1,5 @@
+import { Keyboard, View, ViewProps, Modal, TextInput, Pressable, useColorScheme } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { Keyboard, View, ViewProps, Modal, TextInput } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { useRef, useState } from "react";
@@ -46,6 +46,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
   const transactionId = (route.params as ParamsProps)?.transactionId ?? undefined;
   const { transactions } = useTransactions();
   const transaction = getTransactionById(transactions, transactionId ?? "");
+  const colorScheme = useColorScheme();
 
   const [date, setDate] = useState<Date | undefined>(transaction?.date ?? undefined);
   const [type, setType] = useState<"income" | "expense" | string>(transaction?.type ?? "expense");
@@ -111,6 +112,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         handleChange("date");
         dateInput.current?.blur();
       },
+
       mode: "date",
     });
   }
@@ -219,14 +221,19 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         isLoading={isSubmitting}
       />
 
-      <Modal animationType="slide" visible={showCategoriesModal}>
-        <CategoriesList
-          category={category}
-          onCategorySelected={handleCategorySelection}
-          onClose={() => {
-            setShowCategoriesModal(false);
-          }}
-        />
+      <Modal animationType="fade" visible={showCategoriesModal} transparent>
+        <Pressable
+          className="items-center justify-center flex-1 bg-content-400/60"
+          onPress={() => setShowCategoriesModal(false)}
+        >
+          <CategoriesList
+            category={category}
+            onCategorySelected={handleCategorySelection}
+            onClose={() => {
+              setShowCategoriesModal(false);
+            }}
+          />
+        </Pressable>
       </Modal>
 
       {/* KeyboardAvoidingView fix */}
