@@ -1,4 +1,4 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import TransactionsListHeader from "../../components/TransactionsListHeader";
@@ -9,11 +9,20 @@ import HighlightCards from "../../components/HighlightCards";
 import Container from "../../components/common/Container";
 import { Transaction } from "../../models/Transaction";
 import HomeHeader from "../../components/HomeHeader";
+import { useAuth } from "../../context/AuthContext";
 import colors from "../../../colors";
 
 const Home = () => {
-  const { isLoading, transactions, oldestTransactionDate, handlePreviousAndNextMonthTransactions } = useTransactions();
+  const {
+    oldestTransactionDate,
+    transactions,
+    isLoading,
+    handlePreviousAndNextMonthTransactions,
+    deleteItemFromCurrentMonthTransactions,
+    deleteTransaction,
+  } = useTransactions();
   const navigation = useNavigation();
+  const { authUser } = useAuth();
 
   async function onPreviousMonth(): Promise<void> {
     const currentMonth = transactions[0]?.date?.getMonth() ?? new Date().getMonth();
@@ -31,8 +40,28 @@ const Home = () => {
     return await handlePreviousAndNextMonthTransactions(month, year);
   }
 
-  function onItemPress(item: Transaction) {
+  function handleEdit(item: Transaction) {
     navigation.navigate("addTransaction", { transactionId: item.Id! });
+  }
+
+  function handleDelete(itemId: string) {
+    return Alert.alert("Deletar", "Tem certeza que deseja deletar a transação?", [
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+      {
+        text: "Sim",
+        onPress: async () => {
+          try {
+            await deleteTransaction(itemId, authUser?.uid!);
+            deleteItemFromCurrentMonthTransactions(itemId);
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      },
+    ]);
   }
 
   return (
@@ -58,7 +87,14 @@ const Home = () => {
                 onNextMonth={onNextMonth}
               />
             )}
-            renderItem={({ item }) => <TransactionCard transaction={item} onPress={() => onItemPress(item)} />}
+            renderItem={({ item, index }) => (
+              <TransactionCard
+                index={index}
+                transaction={item}
+                onDelete={() => handleDelete(item.Id!)}
+                onEdit={() => handleEdit(item)}
+              />
+            )}
           />
         ) : (
           <ActivityIndicator size={60} color={colors.primary.DEFAULT} />
