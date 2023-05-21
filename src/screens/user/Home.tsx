@@ -1,7 +1,7 @@
 import { View, FlatList, ActivityIndicator, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import TransactionsListHeader from "../../components/TransactionsListHeader";
+import TransactionsMonthSelector from "../../components/TransactionsMonthSelector";
 import TransactionsListEmpty from "../../components/TransactionsListEmpty";
 import { useTransactions } from "../../context/TransactionsContext";
 import TransactionCard from "../../components/TransactionCard";
@@ -80,7 +80,7 @@ const Home = () => {
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => <TransactionsListEmpty initialDate={oldestTransactionDate} />}
             ListHeaderComponent={() => (
-              <TransactionsListHeader
+              <TransactionsMonthSelector
                 currentDate={transactions[0]?.date ?? new Date()}
                 initialDate={oldestTransactionDate}
                 onPreviousMonth={onPreviousMonth}
