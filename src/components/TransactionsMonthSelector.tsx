@@ -4,20 +4,20 @@ import { months } from "../utils/transactionsUtils";
 import Button from "./common/Button";
 import Text from "./common/Text";
 
-type TransactionsListHeaderProps = ViewProps & {
+type TransactionsMonthSelectorProps = ViewProps & {
   initialDate: Date | undefined;
   currentDate: Date;
   onPreviousMonth: (event: GestureResponderEvent) => Promise<void>;
   onNextMonth: (event: GestureResponderEvent) => Promise<void>;
 };
 
-const TransactionsListHeader = ({
+const TransactionsMonthSelector = ({
   initialDate,
   currentDate,
   onNextMonth,
   onPreviousMonth,
   ...props
-}: TransactionsListHeaderProps) => {
+}: TransactionsMonthSelectorProps) => {
   if (!initialDate) return null;
 
   return (
@@ -49,4 +49,4 @@ const TransactionsListHeader = ({
   );
 };
 
-export default TransactionsListHeader;
+export default TransactionsMonthSelector;
