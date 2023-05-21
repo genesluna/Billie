@@ -23,10 +23,7 @@ const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: Cat
   }
 
   return (
-    <Container {...props}>
-      <Text size="lg" className="pt-8 pb-4 font-semibold">
-        Categorias
-      </Text>
+    <View className="h-[51vh] w-[65vw] bg-base-50 dark:bg-base-350" {...props}>
       <FlatList
         className="w-full"
         data={categories}
@@ -34,7 +31,7 @@ const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: Cat
         renderItem={({ item }) => (
           <View>
             <Pressable
-              className={`flex-row items-center px-3 py-4 ${
+              className={`flex-row items-center p-4 ${
                 category?.name === item.name ? "bg-primary-faded dark:bg-primary-faded" : ""
               }`}
               onPress={() => handleCategorySelection(item)}
@@ -52,7 +49,7 @@ const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: Cat
         )}
         ItemSeparatorComponent={() => <View className="w-full h-[1] bg-content-300 dark:bg-content-200" />}
       />
-    </Container>
+    </View>
   );
 };
 
