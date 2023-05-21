@@ -22,6 +22,10 @@ export function updateTransaction(transaction: Transaction, userId: string) {
     });
 }
 
+export function deleteTransaction(transactionId: string, userId: string) {
+  return transactionsCollection(userId).doc(transactionId).delete();
+}
+
 export async function getUserTransactions(userId: string) {
   return await transactionsCollection(userId)
     .orderBy("date", "asc")
