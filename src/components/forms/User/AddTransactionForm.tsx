@@ -1,4 +1,4 @@
-import { Keyboard, View, ViewProps, Modal, TextInput, Pressable, useColorScheme } from "react-native";
+import { Keyboard, View, ViewProps, Modal, TextInput, Pressable } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Feather as Icon } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
@@ -46,7 +46,6 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
   const transactionId = (route.params as ParamsProps)?.transactionId ?? undefined;
   const { transactions } = useTransactions();
   const transaction = getTransactionById(transactions, transactionId ?? "");
-  const colorScheme = useColorScheme();
 
   const [date, setDate] = useState<Date | undefined>(transaction?.date ?? undefined);
   const [type, setType] = useState<"income" | "expense" | string>(transaction?.type ?? "expense");
