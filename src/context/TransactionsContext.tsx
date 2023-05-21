@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContext";
 import {
   addTransaction,
   updateTransaction,
+  deleteTransaction,
   getCurrentMonthUserTransactions,
   getOldestUserTransactionDate,
   getUserTransactionsByMonthAndYear,
@@ -22,7 +23,9 @@ type TransactionsContextType = {
   isLoading: boolean;
   handlePreviousAndNextMonthTransactions(month: number, year: number): Promise<void>;
   updateTransaction: (transaction: Transaction, userId: string) => Promise<void>;
+  deleteTransaction: (transactionId: string, userId: string) => Promise<void>;
   updateItemInCurrentMonthTransactions(transaction: Transaction): void;
+  deleteItemFromCurrentMonthTransactions(transactionID: string): void;
   addItemToCurrentMonthTransactions(transaction: Transaction): void;
   addTransaction: (
     transaction: Transaction,
@@ -53,7 +56,7 @@ export function useTransactions() {
 export function TransactionsProvider({ children }: AuthContextProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([] as Transaction[]);
   const [oldestTransactionDate, setOldestTransactionDate] = useState<Date | undefined>(undefined);
-  const [isLoading, setIsloading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { authUser } = useAuth();
 
   // Fetch transactions and oldest transaction date
@@ -67,7 +70,7 @@ export function TransactionsProvider({ children }: AuthContextProps) {
       } catch (error) {
         console.log(error);
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     };
 
@@ -84,13 +87,13 @@ export function TransactionsProvider({ children }: AuthContextProps) {
    */
   async function handlePreviousAndNextMonthTransactions(month: number, year: number): Promise<void> {
     try {
-      setIsloading(true);
+      setIsLoading(true);
       const result = await getUserTransactionsByMonthAndYear(authUser?.uid!, month, year);
       setTransactions(result);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsloading(false);
+      setIsLoading(false);
     }
   }
 
@@ -102,7 +105,7 @@ export function TransactionsProvider({ children }: AuthContextProps) {
    * @param transaction - The transaction to be added.
    */
   function addItemToCurrentMonthTransactions(transaction: Transaction) {
-    setIsloading(true);
+    setIsLoading(true);
 
     /**
      * Processes the transaction by adding it to the transactions array and sorting the transactions by date in descending order.
@@ -130,7 +133,7 @@ export function TransactionsProvider({ children }: AuthContextProps) {
       processTransaction(transaction);
     }
 
-    setIsloading(false);
+    setIsLoading(false);
   }
 
   /**
@@ -139,20 +142,34 @@ export function TransactionsProvider({ children }: AuthContextProps) {
    * @param transaction - The updated transaction to replace the existing one.
    */
   function updateItemInCurrentMonthTransactions(transaction: Transaction) {
-    setIsloading(true);
+    setIsLoading(true);
     const oldTransIndex = transactions.findIndex((obj) => obj.Id === transaction.Id);
     transactions[oldTransIndex] = transaction;
-    setIsloading(false);
+    setIsLoading(false);
+  }
+
+  /**
+   * Deletes a transaction in the current month's transactions.
+   *
+   * @param transactionId - The Id of the transaction to be deleted.
+   */
+  function deleteItemFromCurrentMonthTransactions(transactionId: String) {
+    setIsLoading(true);
+    const trasactionIndex = transactions.findIndex((obj) => obj.Id === transactionId);
+    transactions.splice(trasactionIndex, 1);
+    setIsLoading(false);
   }
 
   const values: TransactionsContextType = {
     oldestTransactionDate,
     transactions,
     isLoading,
+    deleteItemFromCurrentMonthTransactions,
     handlePreviousAndNextMonthTransactions,
     updateItemInCurrentMonthTransactions,
     addItemToCurrentMonthTransactions,
     updateTransaction,
+    deleteTransaction,
     addTransaction,
   };
 
