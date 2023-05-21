@@ -1,5 +1,6 @@
-import { Category } from "../models/Category";
 import { Transaction } from "../models/Transaction";
+import { categories as categoriesData } from "../data/categories";
+import { Category } from "../models/Category";
 
 /**
  * Array of month names in Portuguese.
@@ -78,24 +79,40 @@ export function sumAmountByTransactionType(transactions: Transaction[], transact
 }
 
 /**
- * Calculates the total amounts grouped by category for an array of transactions.
+ * Calculates the total amounts and percentage of the total grouped by category for an array of transactions.
  *
  * @param transactions An array of transactions to calculate totals from.
  *
  * @returns An array of categories with their respective totals.
  */
-export function sumAmountsByCategory(transactions: Transaction[]): Category[] {
+export function sumAmountsAndGetPercentageOfTotalByCategory(transactions: Transaction[]): Category[] {
   const categories: { [name: string]: Category } = {};
+  const totalIncome = sumAmountByTransactionType(transactions, "income");
+  const totalExpense = sumAmountByTransactionType(transactions, "expense");
 
   transactions.forEach((transaction) => {
     const { category, amount, type } = transaction;
     const categoryName = category.name;
+    const categoryType = type;
+    const categoryColor = categoriesData.find((c) => c.name === categoryName)?.color;
 
     if (!categories[categoryName]) {
-      categories[categoryName] = { name: categoryName, icon: category.icon, total: 0 };
+      categories[categoryName] = {
+        name: categoryName,
+        icon: category.icon,
+        type: categoryType,
+        color: categoryColor,
+        total: 0,
+        totalPercentage: 0,
+      };
     }
     if (type === "income") categories[categoryName].total! += amount;
     else if (type === "expense") categories[categoryName].total! -= amount;
+  });
+
+  Object.values(categories).forEach((category) => {
+    if (category.type === "income") category.totalPercentage = (category.total! / totalIncome) * 100;
+    else if (category.type === "expense") category.totalPercentage = (category.total! / totalExpense) * 100 * -1;
   });
 
   return Object.values(categories);
