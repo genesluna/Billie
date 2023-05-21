@@ -3,7 +3,6 @@ import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 
 import { categories } from "../data/categories";
 import { Category } from "../models/Category";
-import Container from "./common/Container";
 import { ComponentProps } from "react";
 import colors from "../../colors";
 import Text from "./common/Text";
