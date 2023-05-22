@@ -51,7 +51,7 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
     });
 
     return (
-      <Pressable className="bg-base-150 dark:bg-base-600 justify-center items-center mb-2" {...props}>
+      <Pressable className="items-center justify-center mb-2 bg-base-150 dark:bg-base-600" {...props}>
         <Animated.View className="p-5" style={{ transform: [{ scale: scale }] }}>
           <Feather name="trash" size={32} color={colors.content.expense} />
         </Animated.View>
@@ -67,7 +67,7 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
     });
 
     return (
-      <Pressable className="bg-base-150 dark:bg-base-600 justify-center items-center mb-2" {...props}>
+      <Pressable className="items-center justify-center mb-2 bg-base-150 dark:bg-base-600" {...props}>
         <Animated.View className="p-5" style={{ transform: [{ scale: scale }] }}>
           <Feather name="edit" size={32} color={colors.content.income} />
         </Animated.View>
@@ -101,7 +101,10 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
       ref={(ref) => (row[index] = ref)}
       friction={3}
     >
-      <View className="flex-row items-center w-full p-3 mb-2 rounded-lg bg-content-100 dark:bg-base-400" {...props}>
+      <View
+        className="flex-row items-center p-3 mx-2 mb-2 rounded-lg shadow-md bg-content-100 dark:bg-base-400 shadow-shadow-light dark:shadow-shadow-dark"
+        {...props}
+      >
         <View className="w-12 h-12 p-3 rounded-full bg-primary-faded dark:bg-primary-focus/50">
           <Icon
             name={transaction.category.icon as ComponentProps<typeof Icon>["name"]}
