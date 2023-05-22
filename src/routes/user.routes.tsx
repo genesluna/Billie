@@ -4,7 +4,7 @@ import { Feather as Icon } from "@expo/vector-icons";
 import { useColorScheme } from "react-native";
 
 import AddTransaction from "../screens/User/AddTransaction";
-import Reports from "../screens/User/Reports";
+import { ReportRoutes } from "./report.routes";
 import Home from "../screens/User/Home";
 import colors from "../../colors";
 
@@ -63,9 +63,10 @@ export function UserRoutes() {
       />
       <Screen
         name="reports"
-        component={Reports}
+        component={ReportRoutes}
         options={{
           title: "Resumo",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Icon name="pie-chart" color={color} size={size} />,
         }}
       />
