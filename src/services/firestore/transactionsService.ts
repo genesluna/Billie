@@ -50,9 +50,7 @@ export async function getOldestUserTransactionDate(userId: string) {
 
 export async function getCurrentMonthUserTransactions(userId: string) {
   const now = new Date();
-
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-
   const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
   return await transactionsCollection(userId)
@@ -71,10 +69,7 @@ export async function getCurrentMonthUserTransactions(userId: string) {
 }
 
 export async function getUserTransactionsByMonthAndYear(userId: string, month: number, year: number) {
-  const now = new Date();
-
   const firstDay = new Date(year, month, 1);
-
   const lastDay = new Date(year, month + 1, 0, 23, 59, 59, 999);
 
   return await transactionsCollection(userId)
