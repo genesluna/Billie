@@ -125,9 +125,9 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
       <View className="flex-row w-full mt-4 mb-3">
         <Button
           icon="arrow-down-circle"
-          className={`w-1/2 border ${
+          className={`w-1/2 border-b-[3px] border-t-[3px] dark:border-b-2 dark:border-t-2 ${
             type === "expense"
-              ? "bg-primary border-primary-border dark:bg-base-400 dark:border-primary-focus"
+              ? "bg-primary border-b-content-100 border-t-primary dark:bg-base-400 dark:border-primary-focus dark:border-t-base-400"
               : "bg-primary-focus border-primary-focus dark:bg-base-550 dark:border-base-550"
           }`}
           activeOpacity={1}
@@ -138,9 +138,9 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         />
         <Button
           icon="arrow-up-circle"
-          className={`w-1/2 border ${
+          className={`w-1/2 border-b-[3px] border-t-[3px] dark:border-b-2 dark:border-t-2 ${
             type === "income"
-              ? "bg-primary border-primary-border dark:bg-base-400 dark:border-primary-focus"
+              ? "bg-primary border-b-content-100 border-t-primary dark:bg-base-400 dark:border-primary-focus dark:border-t-base-400"
               : "bg-primary-focus border-primary-focus dark:bg-base-550 dark:border-base-550"
           }`}
           activeOpacity={1}
