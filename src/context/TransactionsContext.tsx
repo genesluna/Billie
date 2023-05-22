@@ -113,9 +113,13 @@ export function TransactionsProvider({ children }: AuthContextProps) {
      * @param transaction - The transaction to be processed.
      */
     const processTransaction = (transaction: Transaction) => {
-      transactions.push(transaction);
-      const sorted = sortTransactionsByDate<Transaction>(transactions, "desc");
-      setTransactions(sorted);
+      if (!transactions[0]) {
+        setTransactions([transaction]);
+      } else {
+        transactions.push(transaction);
+        const sorted = sortTransactionsByDate<Transaction>(transactions, "desc");
+        setTransactions(sorted);
+      }
     };
 
     // Handle the scenario where the user is in the current month screen and adds a new transaction
@@ -127,10 +131,22 @@ export function TransactionsProvider({ children }: AuthContextProps) {
     }
     // Handle the scenario where the user is not in the current month screen and adds a new transaction
     else if (
+      transactions[0] &&
       transaction.date.getFullYear() === transactions[0].date.getFullYear() &&
       transaction.date.getMonth() === transactions[0].date.getMonth()
     ) {
       processTransaction(transaction);
+    }
+
+    if (oldestTransactionDate) {
+      if (
+        transaction.date.getMonth() < oldestTransactionDate.getMonth() ||
+        transaction.date.getFullYear() < oldestTransactionDate.getFullYear()
+      ) {
+        setOldestTransactionDate(transaction.date);
+      }
+    } else {
+      setOldestTransactionDate(transaction.date);
     }
 
     setIsLoading(false);
@@ -155,8 +171,13 @@ export function TransactionsProvider({ children }: AuthContextProps) {
    */
   function deleteItemFromCurrentMonthTransactions(transactionId: String) {
     setIsLoading(true);
-    const trasactionIndex = transactions.findIndex((obj) => obj.Id === transactionId);
-    transactions.splice(trasactionIndex, 1);
+    const transactionIndex = transactions.findIndex((obj) => obj.Id === transactionId);
+    const transactionDate = transactions[transactionIndex].date;
+    transactions.splice(transactionIndex, 1);
+
+    if (transactionDate === oldestTransactionDate) {
+      // TODO: Handle the scenario where the user deletes the oldest transaction
+    }
     setIsLoading(false);
   }
 
