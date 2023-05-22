@@ -39,10 +39,15 @@ module.exports = {
     400: "#131616",
   },
 
+  shadow: {
+    light: "#3c3c3c",
+    dark: "#505050",
+  },
+
   base: {
     50: "#ffffff",
     100: "#F0F0F0",
-    150: "#e7e9eb",
+    150: "#e6e6e6",
     200: "#e2e8f0",
     300: "#cbd5e1",
     350: "#3c3c3c",
