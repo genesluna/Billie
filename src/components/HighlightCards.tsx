@@ -24,7 +24,7 @@ const HighlightCards = ({ transactions, isLoading, ...props }: HighlightCardsPro
       contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, gap: 12 }}
       {...props}
     >
-      <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark h-24 p-4 min-w-[144]">
+      <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark/70 h-24 p-4 min-w-[144]">
         <View className="flex-row items-center justify-between">
           <Text size="base">Despesas</Text>
           <Icon name="arrow-down-circle" size={20} color={colors.content.expense} />
@@ -41,7 +41,7 @@ const HighlightCards = ({ transactions, isLoading, ...props }: HighlightCardsPro
         )}
       </View>
 
-      <View className=" bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark h-24 p-4 min-w-[144]">
+      <View className=" bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark/70 h-24 p-4 min-w-[144]">
         <View className="flex-row items-center justify-between">
           <Text size="base">Receitas</Text>
           <Icon name="arrow-up-circle" size={20} color={colors.content.income} />
@@ -58,7 +58,7 @@ const HighlightCards = ({ transactions, isLoading, ...props }: HighlightCardsPro
         )}
       </View>
 
-      <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark h-24 p-4 min-w-[144]">
+      <View className="bg-content-100 dark:bg-base-400 rounded-lg shadow-md shadow-shadow-light dark:shadow-shadow-dark/70 h-24 p-4 min-w-[144]">
         <View className="flex-row items-center justify-between">
           <Text size="base">Total</Text>
           <Icon name="dollar-sign" size={20} color={total >= 0 ? colors.content.income : colors.content.expense} />

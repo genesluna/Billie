@@ -102,7 +102,7 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
       friction={3}
     >
       <View
-        className="flex-row items-center p-3 mx-2 mb-2 rounded-lg shadow-md bg-content-100 dark:bg-base-400 shadow-shadow-light dark:shadow-shadow-dark"
+        className="flex-row items-center p-3 mx-2 mb-2 rounded-lg shadow-md bg-content-100 dark:bg-base-400 shadow-shadow-light dark:shadow-shadow-dark/50"
         {...props}
       >
         <View className="w-12 h-12 p-3 rounded-full bg-primary-faded dark:bg-primary-focus/50">
