@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#212121"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "googleServicesFile": "./src/config/google-services.json",
       "supportsTablet": true
@@ -22,7 +20,7 @@
       "googleServicesFile": "./src/config/google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#44917b"
       },
       "package": "com.codercat.billie"
     },
