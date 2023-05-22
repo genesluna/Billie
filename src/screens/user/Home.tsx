@@ -51,7 +51,7 @@ const Home = () => {
         {!isLoading ? (
           <FlatList
             className="w-full"
-            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start" }}
             data={transactions}
             keyExtractor={(item) => item?.Id!}
             showsVerticalScrollIndicator={false}
