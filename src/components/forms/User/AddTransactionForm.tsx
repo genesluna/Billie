@@ -58,7 +58,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
 
   const initialValues: AddTransactionFormValues = {
     description: transaction?.description ?? "",
-    amount: maskCurrency(transaction?.amount.toString() ?? ""),
+    amount: maskCurrency(transaction?.amount.toFixed(2) ?? ""),
     categoryName: transaction?.category.name ?? "",
     date: transaction?.date.toString() ?? "",
   };
@@ -103,8 +103,11 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
   }
 
   function handleDateSelection() {
+    const now = new Date();
     DateTimePickerAndroid.open({
-      value: date ?? new Date(),
+      value: date ?? now,
+      minimumDate: new Date(now.getFullYear(), now.getMonth() - 1, 1),
+      maximumDate: new Date(now.getFullYear(), now.getMonth() + 1, 0),
       onChange: (e, selectedDate) => {
         setDate(selectedDate);
         values.date = formatDate(selectedDate!);
