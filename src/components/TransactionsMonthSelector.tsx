@@ -1,14 +1,15 @@
-import { View, ViewProps } from "react-native";
+import { ActivityIndicator, View, ViewProps } from "react-native";
 
 import { useTransactions } from "../context/TransactionsContext";
 import { months } from "../utils/transactionsUtils";
 import Button from "./common/Button";
 import Text from "./common/Text";
+import colors from "../../colors";
 
 type TransactionsMonthSelectorProps = ViewProps & {};
 
 const TransactionsMonthSelector = ({ ...props }: TransactionsMonthSelectorProps) => {
-  const { transactions, oldestTransactionDate, handlePreviousAndNextMonthTransactions } = useTransactions();
+  const { transactions, oldestTransactionDate, isLoading, handlePreviousAndNextMonthTransactions } = useTransactions();
   const currentDate = transactions[0]?.date ?? new Date();
   const initialDate = oldestTransactionDate;
 
@@ -42,9 +43,13 @@ const TransactionsMonthSelector = ({ ...props }: TransactionsMonthSelectorProps)
       ) : (
         <View className="w-10 h-10" />
       )}
-      <Text size="lg" className="font-medium text-center">
-        {months[currentDate.getMonth()]} de {currentDate.getFullYear()}
-      </Text>
+      {!isLoading ? (
+        <Text size="lg" className="font-medium text-center">
+          {months[currentDate.getMonth()]} de {currentDate.getFullYear()}
+        </Text>
+      ) : (
+        <ActivityIndicator size={30} color={colors.primary.DEFAULT} />
+      )}
       {currentDate.getMonth() !== new Date().getMonth() ? (
         <Button
           icon="arrow-right"
