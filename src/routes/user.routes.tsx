@@ -43,6 +43,7 @@ export function UserRoutes() {
           title: "Lista",
           headerShown: false,
           tabBarIcon: ({ color, size }) => <Icon name="list" color={color} size={size} />,
+          freezeOnBlur: true,
         }}
       />
       <Screen
@@ -68,6 +69,7 @@ export function UserRoutes() {
           title: "Resumo",
           headerShown: false,
           tabBarIcon: ({ color, size }) => <Icon name="pie-chart" color={color} size={size} />,
+          freezeOnBlur: true,
         }}
       />
     </Navigator>
