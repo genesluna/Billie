@@ -28,7 +28,7 @@ export function ReportRoutes() {
           height: colorScheme === "dark" ? 2 : 3,
         },
         tabBarLabelStyle: { fontSize: 17, fontWeight: "600", textTransform: "none" },
-        tabBarItemStyle: { flexDirection: "row" },
+        tabBarItemStyle: { flexDirection: "row", height: 51 },
         tabBarIconStyle: { justifyContent: "center" },
         tabBarAndroidRipple: { borderless: false, color: colors.primary.focus },
       }}
