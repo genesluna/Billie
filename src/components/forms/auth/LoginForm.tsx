@@ -9,10 +9,10 @@ import Input from "../../common/Input";
 import Text from "../../common/Text";
 
 type LoginFormProps = ViewProps & {
-  onSubmit: (values: LoginFormValues) => Promise<void>;
   onGoogleSingin: (event: GestureResponderEvent) => Promise<void>;
-  onRegister: (event: GestureResponderEvent) => void;
   onForgotPassword: (event: GestureResponderEvent) => void;
+  onSubmit: (values: LoginFormValues) => Promise<void>;
+  onRegister: (event: GestureResponderEvent) => void;
   isGoogleSinginLoading?: boolean;
 };
 
