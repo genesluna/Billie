@@ -1,10 +1,10 @@
 import {
-  Animated,
   View,
-  useColorScheme,
+  Animated,
   ViewProps,
   Pressable,
   PressableProps,
+  useColorScheme,
   GestureResponderEvent,
 } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
