@@ -4,11 +4,11 @@
 
 Billie é um aplicativo móvel desenvolvido com React Native e Expo que ajuda você a controlar suas despesas. Com o Billie, você pode registrar facilmente suas despesas, visualizar as tendências de gastos ao longo do tempo e definir orçamentos para acompanhar suas finanças.
 
-## Dark Theme
+## Tema escuro
 
 ![Billie Dark Mode Overview](/assets/Billie_Dark_Overview_800w.jpg)
 
-## Light Theme
+## Tema claro
 
 ![Billie Light Mode Overview](/assets/Billie_Light_Overview_800w.jpg)
 
