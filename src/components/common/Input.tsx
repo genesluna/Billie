@@ -42,7 +42,7 @@ const Input = forwardRef<TextInput, InputProps>(
       : error
       ? "border-error-focus dark:border-error"
       : "border-transparent";
-    const readOnlyColor = readOnly ? "bg-base-150 dark:bg-base-700" : "bg-content-100 dark:bg-base-400";
+    const readOnlyColor = readOnly ? "bg-base-100 dark:bg-base-700" : "bg-content-100 dark:bg-base-400";
     let colorScheme = useColorScheme();
 
     return (
