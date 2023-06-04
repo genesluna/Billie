@@ -13,6 +13,18 @@ type CategoriesListProps = ViewProps & {
   onClose: () => void;
 };
 
+/**
+ * CategoriesList Component
+ *
+ * Renders a list of categories with icons and handles category selection.
+ *
+ * @param category - The currently selected category.
+ * @param onCategorySelected - Callback function invoked when a category is selected.
+ * @param onClose - Callback function invoked when the component is closed.
+ * @param props - Additional props to be applied to the root View component.
+ *
+ * @returns JSX.Element representing the CategoriesList component.
+ */
 const CategoriesList = ({ category, onCategorySelected, onClose, ...props }: CategoriesListProps) => {
   let colorScheme = useColorScheme();
 

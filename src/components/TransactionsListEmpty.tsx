@@ -7,6 +7,10 @@ import Text from "./common/Text";
 
 type TransactionsListEmptyProps = ViewProps & {};
 
+/**
+ * Component that renders the empty state for the transactions list.
+ * It displays a message and an icon when there are no transactions.
+ */
 const TransactionsListEmpty = ({ ...props }: TransactionsListEmptyProps) => {
   let colorScheme = useColorScheme();
   const { oldestTransactionDate } = useTransactions();
