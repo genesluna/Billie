@@ -115,6 +115,8 @@ export function sumAmountsAndGetPercentageOfTotalByCategory(transactions: Transa
     else if (category.type === "expense") category.totalPercentage = (category.total! / totalExpense) * 100 * -1;
   });
 
+  // TODO: Haldle the case where the category can be both income and expense.
+
   return Object.values(categories);
 }
 
