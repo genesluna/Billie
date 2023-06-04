@@ -18,9 +18,9 @@ To get started with Billie, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Install the required dependencies using `npm install`.
-3. Start the Expo development server using `npm start`.
-4. Install the Expo app on your mobile device or emulator.
-5. Scan the QR code displayed in the terminal or Expo web interface to launch the app.
+3. Run `npx expo prebuild` to to update the native projects.
+4. Create a custom of Expo Go installation by running `npx expo run:android` or `npx expo run:ios` depending on what device you are gointo use.
+5. Start the Expo development server using `npm start`.
 
 ## License
 
