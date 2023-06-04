@@ -6,9 +6,13 @@ Billie é um aplicativo móvel desenvolvido com React Native e Expo que ajuda vo
 
 <br/>
 
+## Dark Theme
+
 ![Billie Dark Mode Overview](/assets/Billie_Dark_Overview_800w.jpg)
 
-<br/>
+## Light Theme
+
+![Billie Light Mode Overview](/assets/Billie_Light_Overview_800w.jpg)
 
 ## Características
 

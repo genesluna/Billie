@@ -6,7 +6,13 @@ Billie is a mobile application built using React Native and Expo that helps you 
 
 <br/>
 
+## Dark Theme
+
 ![Billie Dark Mode Overview](/assets/Billie_Dark_Overview_800w.jpg)
+
+## Light Theme
+
+![Billie Light Mode Overview](/assets/Billie_Light_Overview_800w.jpg)
 
 ## Features
 
