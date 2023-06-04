@@ -32,6 +32,19 @@ type ActionsProps = PressableProps & {
 let row: Array<Swipeable | null> = [];
 let prevOpenedRow: Swipeable | null = null;
 
+/**
+ * TransactionCard Component
+ *
+ * Displays a card representing a transaction with swipeable actions for editing and deleting.
+ *
+ * @param transaction - The transaction object to display in the card.
+ * @param index - The index of the transaction in the list.
+ * @param onDelete - Event handler for the delete action.
+ * @param onEdit - Event handler for the edit action.
+ * @param props - Additional props to be applied to the View component.
+ *
+ * @returns JSX.Element representing the TransactionCard component.
+ */
 const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: TransactionProps) => {
   let colorScheme = useColorScheme();
   const amountColor = transaction.type === "income" ? "text-content-income" : "text-content-expense";
@@ -43,6 +56,16 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
     prevOpenedRow = row[index];
   };
 
+  /**
+   * RightActions Component
+   *
+   * Component representing the right swipe action (delete).
+   *
+   * @param dragX - Animated value representing the drag distance of the swipe gesture.
+   * @param props - Additional props to be applied to the Pressable component.
+   *
+   * @returns JSX.Element representing the RightActions component.
+   */
   function RightActions({ dragX, ...props }: ActionsProps) {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
@@ -59,6 +82,16 @@ const TransactionCard = ({ transaction, index, onDelete, onEdit, ...props }: Tra
     );
   }
 
+  /**
+   * LeftActions Component
+   *
+   * Component representing the left swipe action (edit).
+   *
+   * @param dragX - Animated value representing the drag distance of the swipe gesture.
+   * @param props - Additional props to be applied to the Pressable component.
+   *
+   * @returns JSX.Element representing the LeftActions component.
+   */
   function LeftActions({ dragX, ...props }: ActionsProps) {
     const scale = dragX.interpolate({
       inputRange: [0, 100],

@@ -8,6 +8,10 @@ import colors from "../../colors";
 
 type TransactionsMonthSelectorProps = ViewProps & {};
 
+/**
+ * Component that renders the month selector for the transactions list.
+ * It allows the user to navigate to previous and next months.
+ */
 const TransactionsMonthSelector = ({ ...props }: TransactionsMonthSelectorProps) => {
   const { transactions, oldestTransactionDate, isLoading, handlePreviousAndNextMonthTransactions } = useTransactions();
   const currentDate = transactions[0]?.date ?? new Date();

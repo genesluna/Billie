@@ -11,6 +11,17 @@ type HighlightCardsProps = ScrollViewProps & {
   isLoading: boolean;
 };
 
+/**
+ * HighlightCards Component
+ *
+ * Renders summary information about transactions, including expenses, income, and total amount.
+ *
+ * @param transactions - An array of Transaction objects.
+ * @param isLoading - Indicates whether the data is currently being loaded.
+ * @param props - Additional props to be applied to the ScrollView component.
+ *
+ * @returns JSX.Element representing the HighlightCards component.
+ */
 const HighlightCards = ({ transactions, isLoading, ...props }: HighlightCardsProps) => {
   const income = sumAmountByTransactionType(transactions, "income");
   const expenses = sumAmountByTransactionType(transactions, "expense");

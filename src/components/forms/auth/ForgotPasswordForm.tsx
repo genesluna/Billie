@@ -16,6 +16,13 @@ export type ForgotPaswordFormValues = {
   email: string;
 };
 
+/**
+ * Component that renders a form for password reset.
+ *
+ * @param onSubmit - A function that handles the submission of the form.
+ *
+ * @returns JSX element representing the password reset form.
+ */
 const ForgotPasswordForm = ({ onSubmit, ...props }: ForgotPaswordFormProps) => {
   const initialValues: ForgotPaswordFormValues = { email: "" };
 

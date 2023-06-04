@@ -10,13 +10,23 @@ type ReportCardProps = PressableProps & {
   category: Category;
 };
 
+/**
+ * ReportCard Component
+ *
+ * Renders a report card for a specific category, showing its icon, name, percentage, and total amount.
+ *
+ * @param category - The category object to display in the report card.
+ * @param props - Additional props to be applied to the Pressable component.
+ *
+ * @returns JSX.Element representing the ReportCard component.
+ */
 const ReportCard = ({ category, ...props }: ReportCardProps) => {
   let colorScheme = useColorScheme();
   const amountColor = category.type === "income" ? "text-content-income" : "text-content-expense";
 
   return (
     <Pressable
-      className="flex-row w-full shadow-md fill-none items-center mx-2 mb-2 rounded-lg bg-content-100 dark:bg-base-400 shadow-shadow-light dark:shadow-shadow-dark/50"
+      className="flex-row items-center w-full mx-2 mb-2 rounded-lg shadow-md fill-none bg-content-100 dark:bg-base-400 shadow-shadow-light dark:shadow-shadow-dark/50"
       android_ripple={{ borderless: false, color: colors.primary.faded }}
       delayLongPress={100}
       {...props}
