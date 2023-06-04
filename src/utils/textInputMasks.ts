@@ -1,9 +1,9 @@
 /**
  * Formats a phone number string into a Brazilian phone number format.
  *
- * @param {string} value - The phone number string to be formatted.
+ * @param value - The phone number string to be formatted.
  *
- * @returns {string} The formatted phone number string.
+ * @returns The formatted phone number string.
  * The format will be "(XX) X XXXX-XXXX", where X is a digit from the input value.
  * Any non-numeric character in the input value will be removed before formatting.
  */
