@@ -2,6 +2,9 @@ import { useContext, useState, useEffect, ReactNode, createContext } from "react
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
+import { updateUser } from "../services/firestore/userService";
+import { User } from "../models/User";
+
 GoogleSignin.configure({
   webClientId: "891042087368-rv9v9ir4p3ec8rl4n5r460elk31f901u.apps.googleusercontent.com",
   offlineAccess: true,
@@ -16,6 +19,7 @@ type AuthContextType = {
   register: (email: string, password: string) => Promise<FirebaseAuthTypes.UserCredential>;
   login: (email: string, password: string) => Promise<FirebaseAuthTypes.UserCredential>;
   loginWithGoogle: () => Promise<FirebaseAuthTypes.UserCredential>;
+  updateUser: (user: User, userId: string) => Promise<void>;
   deleteCurrentUser: () => Promise<void> | undefined;
   resetPassword: (email: string) => Promise<void>;
   isEmailVerified(): boolean | undefined;
@@ -152,6 +156,7 @@ export function AuthProvider({ children }: AuthContextProps) {
     isEmailVerified,
     reloadAuthUser,
     resetPassword,
+    updateUser,
     register,
     logout,
     login,
