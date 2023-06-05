@@ -1,5 +1,6 @@
 import { View, FlatList, ActivityIndicator, Alert, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import storage from "@react-native-firebase/storage";
 import { useEffect, useState } from "react";
 
 import UserProfile, { UserProfileFormValues } from "../../components/forms/User/UserProfileForm";
@@ -48,8 +49,12 @@ const Home = () => {
   }
 
   async function handleProfileSubmit(values: UserProfileFormValues) {
-    console.log(values);
     try {
+      if (values.photoURL && values.photoURL !== appUser?.photoURL) {
+        const reference = storage().ref(`${authUser?.uid}/profileImage.jpeg`);
+        await reference.putFile(values.photoURL);
+        values.photoURL = await reference.getDownloadURL();
+      }
       await updateUser(
         {
           email: values.email,
