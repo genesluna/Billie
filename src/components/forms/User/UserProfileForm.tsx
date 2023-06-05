@@ -39,6 +39,15 @@ export type UserProfileFormValues = {
   photoURL: string;
 };
 
+/**
+ * A form component for editing user profile information.
+ *
+ * @param appUser - The user object containing the initial profile information.
+ * @param onSubmit - A function to handle form submission.
+ * @param onClose - A function to handle form close event.
+ *
+ * @returns A React component representing the user profile form.
+ */
 const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFormProps) => {
   const [profileImage, setProfileImage] = useState<string | undefined | null>(appUser.photoURL);
   const initialValues: UserProfileFormValues = {
