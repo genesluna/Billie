@@ -8,21 +8,23 @@ import {
   Keyboard,
   Platform,
   TextInput,
+  Pressable,
+  Alert,
 } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import { maskPhone } from "../../../utils/textInputMasks";
+import MaskedInput from "../../common/MaskedInput";
+import Container from "../../common/Container";
+import { User } from "../../../models/User";
 import Button from "../../common/Button";
 import colors from "../../../../colors";
 import Input from "../../common/Input";
 import Text from "../../common/Text";
-import Container from "../../common/Container";
-import { useAuth } from "../../../context/AuthContext";
-import MaskedInput from "../../common/MaskedInput";
-import { maskPhone } from "../../../utils/textInputMasks";
-import { useRef } from "react";
-import { User } from "../../../models/User";
 
 type UserProfileFormProps = ViewProps & {
   appUser: User;
@@ -38,7 +40,7 @@ export type UserProfileFormValues = {
 };
 
 const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFormProps) => {
-  const { authUser } = useAuth();
+  const [profileImage, setProfileImage] = useState<string | undefined | null>(appUser.photoURL);
   const initialValues: UserProfileFormValues = {
     email: appUser.email!,
     name: appUser.name! ?? "",
@@ -60,6 +62,26 @@ const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFo
 
   const phone = useRef<TextInput>(null);
 
+  async function handleProfileImage(event: GestureResponderEvent) {
+    let permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (permission.status === "granted") {
+      const image = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 0.4,
+        allowsMultipleSelection: false,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
+
+      if (!image.canceled) {
+        setProfileImage(image.assets[0].uri);
+        values.photoURL = image.assets[0].uri;
+      }
+    } else {
+      Alert.alert("Você precisa conceder permissão para o uso da câmera de seu celular.");
+    }
+  }
+
   return (
     <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -68,17 +90,19 @@ const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFo
             Perfil do Usuário
           </Text>
 
-          {!authUser?.photoURL ? (
-            <View className="justify-center p-8 my-12 rounded-full bg-base-350 dark:bg-base-450">
-              <Icon name="user" size={50} color={colors.content[100]} />
-            </View>
-          ) : (
-            <Image
-              source={{ uri: authUser.photoURL }}
-              resizeMode="contain"
-              className="my-12 rounded-full resize w-28 h-28"
-            />
-          )}
+          <Pressable
+            className="justify-center my-12 overflow-hidden rounded-full"
+            android_ripple={{ borderless: false, color: colors.primary.faded, foreground: true }}
+            onPress={handleProfileImage}
+          >
+            {!profileImage ? (
+              <View className="justify-center p-8 bg-base-350 dark:bg-base-450">
+                <Icon name="user" size={50} color={colors.content[100]} />
+              </View>
+            ) : (
+              <Image source={{ uri: profileImage }} resizeMode="contain" className="resize w-28 h-28" />
+            )}
+          </Pressable>
 
           <Input icon="mail" readOnly placeholder="Digite seu e-mail" value={values.email} />
           <Input
@@ -106,7 +130,7 @@ const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFo
             keyboardType="phone-pad"
             keyboardAppearance="dark"
             returnKeyType="done"
-            onChangeText={handleChange("phoneNumber")}
+            onChangeMask={handleChange("phoneNumber")}
             onBlur={handleBlur("phoneNumber")}
             error={errors.phoneNumber}
             touched={touched.phoneNumber}
