@@ -19,8 +19,9 @@ const Register = () => {
       await reloadAuthUser();
       await createUser(
         {
-          name: result.user.displayName,
-          email: result.user.email,
+          name: name.trim(),
+          email: email.trim(),
+          phoneNumber: result.user.phoneNumber ?? "",
           photoURL: result.user.photoURL ?? "",
         },
         result.user.uid
