@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { View, ToastAndroid } from "react-native";
 
 import Container from "../../components/common/Container";
-import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/common/Button";
 import { useAuth } from "../../context/AuthContext";
 import Text from "../../components/common/Text";
@@ -15,7 +14,6 @@ const EmailValidation = () => {
   const [time, setTime] = useState<number>(60);
   const { authUser, reloadAuthUser, isEmailVerified } = useAuth();
   const timerRef = useRef<number>(time);
-  const navigation = useNavigation();
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -65,7 +63,7 @@ const EmailValidation = () => {
 
   return (
     <Container className="px-6">
-      <View className="justify-center p-8 my-10 rounded-full bg-base-400 dark:bg-base-600">
+      <View className="justify-center p-8 my-10 rounded-full bg-base-400 dark:bg-base-450">
         <Icon name="mail" size={50} color={colors.content[100]} />
       </View>
 
