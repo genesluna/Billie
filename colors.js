@@ -15,8 +15,8 @@ module.exports = {
   },
 
   accent: {
-    DEFAULT: "#ac516b",
-    focus: "#91445a",
+    DEFAULT: "#537188",
+    focus: "#4c677c",
   },
 
   danger: {
