@@ -1,9 +1,13 @@
 import { useContext, useState, useEffect, ReactNode, createContext } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import * as SplashScreen from "expo-splash-screen";
 
 import { updateUser } from "../services/firestore/userService";
 import { User } from "../models/User";
+
+// Keep the splash screen visible while we initialize the app
+SplashScreen.preventAutoHideAsync();
 
 GoogleSignin.configure({
   webClientId: "891042087368-rv9v9ir4p3ec8rl4n5r460elk31f901u.apps.googleusercontent.com",
