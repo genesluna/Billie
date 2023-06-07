@@ -14,8 +14,8 @@ import Container from "../../components/common/Container";
 import { Transaction } from "../../models/Transaction";
 import HomeHeader from "../../components/HomeHeader";
 import { useAuth } from "../../context/AuthContext";
-import colors from "../../../colors";
 import { User } from "../../models/User";
+import colors from "../../../colors";
 
 const Home = () => {
   const { transactions, isLoading, deleteItemFromCurrentMonthTransactions, deleteTransaction } = useTransactions();
