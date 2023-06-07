@@ -9,14 +9,13 @@ import {
   Platform,
   TextInput,
   Pressable,
-  Alert,
 } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import { captureImage } from "../../../utils/cameraUtils";
 import { maskPhone } from "../../../utils/textInputMasks";
 import MaskedInput from "../../common/MaskedInput";
 import Container from "../../common/Container";
@@ -72,22 +71,11 @@ const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFo
   const phone = useRef<TextInput>(null);
 
   async function handleProfileImage(event: GestureResponderEvent) {
-    let permission = await ImagePicker.requestCameraPermissionsAsync();
-    if (permission.status === "granted") {
-      const image = await ImagePicker.launchCameraAsync({
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 0.4,
-        allowsMultipleSelection: false,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      });
+    const capturedImageURI = await captureImage();
 
-      if (!image.canceled) {
-        setProfileImage(image.assets[0].uri);
-        values.photoURL = image.assets[0].uri;
-      }
-    } else {
-      Alert.alert("Você precisa conceder permissão para o uso da câmera de seu celular.");
+    if (capturedImageURI !== null) {
+      setProfileImage(capturedImageURI);
+      values.photoURL = capturedImageURI;
     }
   }
 
@@ -105,7 +93,7 @@ const UserProfileForm = ({ onSubmit, onClose, appUser, ...props }: UserProfileFo
             onPress={handleProfileImage}
           >
             {!profileImage ? (
-              <View className="justify-center p-8 bg-base-350 dark:bg-base-450">
+              <View className="justify-center p-8 bg-primary dark:bg-base-450">
                 <Icon name="user" size={50} color={colors.content[100]} />
               </View>
             ) : (
