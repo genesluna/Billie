@@ -1,4 +1,4 @@
-import { Keyboard, View, ViewProps, Modal, TextInput, Pressable } from "react-native";
+import { Keyboard, View, ViewProps, Modal, TextInput, Pressable, GestureResponderEvent, Image } from "react-native";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Feather as Icon } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
@@ -8,7 +8,9 @@ import * as Yup from "yup";
 
 import { maskCurrency, onlyNumbersWithDecimal } from "../../../utils/textInputMasks";
 import { formatDate, getTransactionById } from "../../../utils/transactionsUtils";
+import TransactionImageModal from "../../../screens/User/TransactionImageModal";
 import { useTransactions } from "../../../context/TransactionsContext";
+import { captureImage } from "../../../utils/cameraUtils";
 import { Transaction } from "../../../models/Transaction";
 import { Category } from "../../../models/Category";
 import MaskedInput from "../../common/MaskedInput";
@@ -50,7 +52,9 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
   const [date, setDate] = useState<Date | undefined>(transaction?.date ?? undefined);
   const [type, setType] = useState<"income" | "expense" | string>(transaction?.type ?? "expense");
   const [category, setCategory] = useState<Category | undefined>(transaction?.category ?? undefined);
+  const [transactionImage, setTransactionImage] = useState<string | undefined | null>(transaction?.photoURL);
   const [showCategoriesModal, setShowCategoriesModal] = useState<boolean>(false);
+  const [showImageModal, setShowImageModal] = useState<boolean>(false);
 
   const amountInput = useRef<TextInput>(null);
   const categoryInput = useRef<TextInput>(null);
@@ -78,6 +82,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         await onUpdateTransaction({
           Id: transactionId,
           description: values.description,
+          photoURL: transactionImage ?? "",
           amount: onlyNumbersWithDecimal(values.amount),
           type: type,
           category: category!,
@@ -87,6 +92,7 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         await onAddTransaction({
           description: values.description,
           amount: onlyNumbersWithDecimal(values.amount),
+          photoURL: transactionImage ?? "",
           type: type,
           category: category!,
           date: date!,
@@ -114,16 +120,38 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
         handleChange("date");
         dateInput.current?.blur();
       },
-
       mode: "date",
     });
   }
 
+  async function handleTransactionImage(event: GestureResponderEvent) {
+    if (transactionImage && !showImageModal) {
+      setShowImageModal(true);
+    } else {
+      const capturedImageURI = await captureImage([3, 4], 0.5);
+
+      if (capturedImageURI !== null) {
+        setTransactionImage(capturedImageURI);
+      }
+    }
+  }
+
   return (
-    <View className="items-center justify-end flex-1 w-full px-6 mt-6 mb-4" {...props}>
-      <View className="justify-center p-8 my-10 rounded-full bg-primary dark:bg-base-450">
-        <Icon name="dollar-sign" size={50} color={colors.content[100]} />
-      </View>
+    <View className="items-center justify-end flex-1 w-full px-2 mt-6 mb-4" {...props}>
+      <Pressable
+        id="Pressable"
+        className="justify-center my-[4vh] overflow-hidden rounded-full"
+        android_ripple={{ borderless: false, color: colors.primary.faded, foreground: true }}
+        onPress={handleTransactionImage}
+      >
+        {!transactionImage ? (
+          <View className="justify-center p-8 bg-primary dark:bg-base-450">
+            <Icon name="dollar-sign" size={50} color={colors.content[100]} />
+          </View>
+        ) : (
+          <Image source={{ uri: transactionImage }} resizeMode="cover" className="resize w-28 h-28" />
+        )}
+      </Pressable>
 
       <View className="flex-row w-full mt-4 mb-3">
         <Button
@@ -236,6 +264,14 @@ const AddTransactionForm = ({ onAddTransaction, onUpdateTransaction, ...props }:
             }}
           />
         </Pressable>
+      </Modal>
+
+      <Modal animationType="slide" visible={showImageModal}>
+        <TransactionImageModal
+          imageURL={transactionImage!}
+          onClose={() => setShowImageModal(false)}
+          onNewImage={handleTransactionImage}
+        />
       </Modal>
 
       {/* KeyboardAvoidingView fix */}
